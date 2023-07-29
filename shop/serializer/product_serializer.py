@@ -9,7 +9,12 @@ class ProductSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, allow_blank=True, max_length=100)
     price = serializers.IntegerField(required=True, min_value=0)
     quantity = serializers.FloatField(required=True, min_value=0, max_value=20)
-    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=True)
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['category'] = instance.category.name
+        return data
 
     def create(self, validated_data):
         return Product.objects.create(**validated_data)
@@ -21,6 +26,5 @@ class ProductSerializer(serializers.Serializer):
         instance.category = validated_data.get('category', instance.category)
         instance.save()
         return instance
-
 
 

@@ -1,15 +1,10 @@
 from django.contrib import admin
+from ShopManagementWeb import settings
 from shop.model import Product
 from django.utils.html import format_html
 from django import forms
 from django.utils.translation import gettext_lazy
 from shop.utils import constants
-
-
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = ["name", "price", "category", "quantity", "image"]
 
 
 class ProductQuantityFilter(admin.SimpleListFilter):
@@ -35,13 +30,28 @@ class ProductQuantityFilter(admin.SimpleListFilter):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    form = ProductForm
-    list_display = ["name", "price", "category", "quantity", "image_preview"]
+    fields = ["name", "price", "category", "quantity", "image", "photo_admin"]
+    list_display = ["_name", "_price", "_category", "_quantity", "photo_admin"]
     list_filter = [ProductQuantityFilter]
     list_per_page = constants.DEFAULT_PAGE_SIZE
+    ordering = ["price"]
 
-    @admin.display(empty_value="???")
-    def image_preview(self, obj):
-        return format_html('<img src = "{}" width = 100 height = 100/>', obj.image)
+    @admin.display(empty_value='0', ordering="price")
+    def _price(self, obj):
+        return "${:,.2f}".format(obj.price).rstrip('0').rstrip('.')
 
+    @admin.display(empty_value="???", ordering="name")
+    def _name(self, obj):
+        return obj.name
+
+    @admin.display(empty_value="???", ordering="category")
+    def _category(self, obj):
+        return obj.category
+
+    @admin.display(empty_value="0", ordering="quantity")
+    def _quantity(self, obj):
+        return obj.quantity
+
+
+    readonly_fields = ["photo_admin"]
     search_fields = ["name", "category__name"]
