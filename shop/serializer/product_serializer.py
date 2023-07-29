@@ -8,8 +8,9 @@ class ProductSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=True, max_length=100)
     price = serializers.IntegerField(required=True, min_value=0)
-    quantity = serializers.FloatField(required=True, min_value=0, max_value=20)
+    quantity = serializers.FloatField(required=True, min_value=0)
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=True)
+    image = serializers.ImageField(allow_null=True, allow_empty_file=True)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
