@@ -6,3 +6,4 @@ markdown
 django-filter
 pygments
 django-jazzmin
+Pillow
