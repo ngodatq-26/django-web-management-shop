@@ -1,6 +1,5 @@
 Django==4.2
 mysqlclient
-rest_framework
 djangorestframework-simplejwt
 djangorestframework
 markdown
