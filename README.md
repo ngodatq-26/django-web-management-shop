@@ -15,9 +15,7 @@ source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
 ```
 2.Create a virtual environment and activate it:
 ```bash
-cd django-web-management-shop
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+pip install -r requirements.txt
 ```
 3.Perform the migrations:
 ```bash
