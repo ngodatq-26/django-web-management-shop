@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shop',
     'rest_framework',
+    'django_filters',
     'rest_framework_simplejwt',
 ]
 
@@ -48,6 +49,8 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -141,7 +144,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1000),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
@@ -180,29 +183,37 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-
 STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
+
 MEDIA_URL = "media/"
+
 MEDIA_ROOT = BASE_DIR / "media"
+
 FOLDER_SAVE_IMAGE_CART = 'images/'
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    # title of the window (Will default to current_admin_site.site_title if
+    # absent or None)
     "site_title": "Shop management Admin",
 
-    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    # Title on the login screen (19 chars max) (defaults to
+    # current_admin_site.site_header if absent or None)
     "site_header": "Shop management",
 
-    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    # Title on the brand (19 chars max) (defaults to
+    # current_admin_site.site_header if absent or None)
     "site_brand": "Shop Management",
 
-    # Logo to use for your site, must be present in static files, used for brand on top left
+    # Logo to use for your site, must be present in static files, used for
+    # brand on top left
     "site_logo": "images/logo.png",
 
-    # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
+    # Logo to use for your site, must be present in static files, used for
+    # login form logo (defaults to site_logo)
     "login_logo": None,
 
     # Logo to use for login form in dark themes (defaults to login_logo)
@@ -211,7 +222,8 @@ JAZZMIN_SETTINGS = {
     # CSS classes that are applied to the logo above
     "site_logo_classes": "img-circle",
 
-    # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
+    # Relative path to a favicon for your site, will default to site_logo if
+    # absent (ideally 32x32 px)
     "site_icon": None,
 
     # Welcome text on the login screen

@@ -1,8 +1,6 @@
 from django.contrib import admin
 from shop.model.category import Category
 from shop.model.product import Product
-from django.db.models import Count
-from django import forms
 from shop.utils import constants
 
 

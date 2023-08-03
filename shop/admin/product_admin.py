@@ -1,8 +1,5 @@
 from django.contrib import admin
-from ShopManagementWeb import settings
 from shop.model import Product
-from django.utils.html import format_html
-from django import forms
 from django.utils.translation import gettext_lazy
 from shop.utils import constants
 
@@ -51,7 +48,6 @@ class ProductAdmin(admin.ModelAdmin):
     @admin.display(empty_value="0", ordering="quantity")
     def _quantity(self, obj):
         return obj.quantity
-
 
     readonly_fields = ["photo_admin"]
     search_fields = ["name", "category__name"]

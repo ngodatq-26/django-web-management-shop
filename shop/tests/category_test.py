@@ -6,8 +6,10 @@ class CategoryModelTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.category1 = Category.objects.create(name='Electronics')
-        cls.category2 = Category.objects.create(name='Mobile', parent_category=cls.category1)
-        cls.category3 = Category.objects.create(name='Accessories', parent_category=cls.category1)
+        cls.category2 = Category.objects.create(name='Mobile',
+                                                parent_category=cls.category1)
+        cls.category3 = Category.objects.create(name='Accessories',
+                                                parent_category=cls.category1)
 
     def test_category_name(self):
         self.assertEqual(self.category1.name, 'Electronics')
@@ -36,7 +38,8 @@ class CategoryModelTestCase(TestCase):
 
     def test_create_category_with_parent(self):
         category_count_before = Category.objects.count()
-        new_category = Category.objects.create(name='Child Category', parent_category=self.category1)
+        new_category = Category.objects.create(name='Child Category',
+                                               parent_category=self.category1)
         category_count_after = Category.objects.count()
         self.assertEqual(category_count_after - category_count_before, 1)
         self.assertEqual(new_category.parent_category, self.category1)

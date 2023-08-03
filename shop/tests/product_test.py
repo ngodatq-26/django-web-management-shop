@@ -1,7 +1,6 @@
 from django.test import TestCase
-from shop.model import Product,Category
+from shop.model import Product, Category
 from django.core.files.uploadedfile import SimpleUploadedFile
-from ShopManagementWeb import settings
 
 
 class ProductModelTestCase(TestCase):

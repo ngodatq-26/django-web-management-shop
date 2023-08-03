@@ -10,7 +10,9 @@ class UploadFileView(APIView):
 
     def post(self, request, *args, **kwargs):
         up_file = request.data.get('file')
-        file_save = settings.MEDIA_URL + settings.FOLDER_SAVE_IMAGE_CART + up_file.name
+        media_url = settings.MEDIA_URL
+        image_folder = settings.FOLDER_SAVE_IMAGE_CART
+        file_save = media_url + image_folder + up_file.name
         if up_file is not None:
             destination = open(file_save, 'wb+')
             for chunk in up_file.chunks():
@@ -20,4 +22,5 @@ class UploadFileView(APIView):
                 "url": file_save
             }, status=status.HTTP_201_CREATED)
         else:
-            return Response({'detail': 'No file was provided.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'No file was provided.'},
+                            status=status.HTTP_400_BAD_REQUEST)

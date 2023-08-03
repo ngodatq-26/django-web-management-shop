@@ -1,8 +1,6 @@
 from django.db import models
 from shop.model.category import Category
 from ShopManagementWeb import settings
-from django.utils.safestring import mark_safe
-from django.template.defaultfilters import truncatechars
 from django.utils.html import format_html
 from django.core.validators import MinValueValidator
 
@@ -21,10 +19,15 @@ class Product(models.Model):
     def photo_admin(self):
         if self.image:
             return format_html(
-                '<img id="photo-admin-preview" src="{}" width="100" height="100"/>', self.image.url
+                '<img id="photo-admin-preview" src="{}" ' +
+                'width="100" height="100"/>',
+                self.image.url
             )
         else:
             return "No image"
+
+    def category_name(self):
+        return self.category.name
 
     class Meta:
         db_table = 'shop_product'

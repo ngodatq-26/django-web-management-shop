@@ -1,14 +1,11 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.decorators import (authentication_classes,
+                                       permission_classes)
 from rest_framework.permissions import IsAuthenticated
-
-from shop.model import Category
 from shop.model import Product
 from shop.serializer.product_serializer import ProductSerializer
-from django import http
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import mixins
 from rest_framework import generics
@@ -26,10 +23,34 @@ class ProductList(mixins.ListModelMixin,
     serializer_class = ProductSerializer
     pagination_class = pagination_custom.CustomPaginationStyled
 
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        name = self.request.query_params.get('name')
+        quantity_min = self.request.query_params.get('quantity_min')
+        quantity_max = self.request.query_params.get('quantity_max')
+        price_min = self.request.query_params.get('price_min')
+        price_max = self.request.query_params.get('price_max')
+        category = self.request.query_params.get('category')
+        if name is not None:
+            queryset = queryset.filter(name=name)
+        if quantity_min is not None:
+            queryset = queryset.filter(quantity__gte=quantity_min)
+        if quantity_max is not None:
+            queryset = queryset.filter(quantity__lte=quantity_max)
+        if price_min is not None:
+            queryset = queryset.filter(quantity__gte=price_min)
+        if price_max is not None:
+            queryset = queryset.filter(quantity__lte=price_max)
+        if category is not None:
+            queryset = queryset.filter(category=category)
+        return queryset
+
     def get(self, request, *args, **kwargs):
-        page_size = int(request.GET.get('page_size', constants.DEFAULT_PAGE_SIZE))
+        page_size = int(request.GET.get('page_size',
+                                        constants.DEFAULT_PAGE_SIZE))
         if page_size <= 0:
-            return get_error_response(status.HTTP_400_BAD_REQUEST, constants.ERROR_PAGE_SIZE_MESSAGE)
+            return get_error_response(status.HTTP_400_BAD_REQUEST,
+                                      constants.ERROR_PAGE_SIZE)
         self.pagination_class.page_size = page_size
         return self.list(request, *args, **kwargs)
 
